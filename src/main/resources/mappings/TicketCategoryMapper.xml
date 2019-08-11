@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pri.xjb.ticket.mapper.TicketCategoryMapper">
+    <resultMap id="BaseResultMap" type="pri.xjb.ticket.model.ticketCategory.response.TicketCategory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="intro" property="intro" jdbcType="VARCHAR"/>
+        <result column="sdate" property="sdate" jdbcType="TIMESTAMP"/>
+        <result column="edate" property="edate" jdbcType="TIMESTAMP"/>
+        <result column="property" property="property" jdbcType="VARCHAR"/>
+        <result column="st" property="st" jdbcType="INTEGER"/>
+        <result column="cuser" property="cuser" jdbcType="INTEGER"/>
+        <result column="uuser" property="uuser" jdbcType="INTEGER"/>
+        <result column="ctime" property="ctime" jdbcType="TIMESTAMP"/>
+        <result column="utime" property="utime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, intro, sdate, edate, property
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from ticket_category
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ticket_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="pri.xjb.ticket.model.ticketCategory.response.TicketCategory">
+    insert into ticket_category (id, name, intro, 
+      sdate, edate, property, 
+      st, cuser, uuser, ctime, 
+      utime)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
+      #{sdate,jdbcType=TIMESTAMP}, #{edate,jdbcType=TIMESTAMP}, #{property,jdbcType=VARCHAR}, 
+      #{st,jdbcType=INTEGER}, #{cuser,jdbcType=INTEGER}, #{uuser,jdbcType=INTEGER}, #{ctime,jdbcType=TIMESTAMP}, 
+      #{utime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="pri.xjb.ticket.model.ticketCategory.response.TicketCategory">
+        insert into ticket_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="intro != null">
+                intro,
+            </if>
+            <if test="sdate != null">
+                sdate,
+            </if>
+            <if test="edate != null">
+                edate,
+            </if>
+            <if test="property != null">
+                property,
+            </if>
+            <if test="st != null">
+                st,
+            </if>
+            <if test="cuser != null">
+                cuser,
+            </if>
+            <if test="uuser != null">
+                uuser,
+            </if>
+            <if test="ctime != null">
+                ctime,
+            </if>
+            <if test="utime != null">
+                utime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="intro != null">
+                #{intro,jdbcType=VARCHAR},
+            </if>
+            <if test="sdate != null">
+                #{sdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="edate != null">
+                #{edate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="property != null">
+                #{property,jdbcType=VARCHAR},
+            </if>
+            <if test="st != null">
+                #{st,jdbcType=INTEGER},
+            </if>
+            <if test="cuser != null">
+                #{cuser,jdbcType=INTEGER},
+            </if>
+            <if test="uuser != null">
+                #{uuser,jdbcType=INTEGER},
+            </if>
+            <if test="ctime != null">
+                #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                #{utime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="pri.xjb.ticket.model.ticketCategory.response.TicketCategory">
+        update ticket_category
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="intro != null">
+                intro = #{intro,jdbcType=VARCHAR},
+            </if>
+            <if test="sdate != null">
+                sdate = #{sdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="edate != null">
+                edate = #{edate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="property != null">
+                property = #{property,jdbcType=VARCHAR},
+            </if>
+            <if test="st != null">
+                st = #{st,jdbcType=INTEGER},
+            </if>
+            <if test="cuser != null">
+                cuser = #{cuser,jdbcType=INTEGER},
+            </if>
+            <if test="uuser != null">
+                uuser = #{uuser,jdbcType=INTEGER},
+            </if>
+            <if test="ctime != null">
+                ctime = #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                utime = #{utime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="pri.xjb.ticket.model.ticketCategory.response.TicketCategory">
+    update ticket_category
+    set name = #{name,jdbcType=VARCHAR},
+      intro = #{intro,jdbcType=VARCHAR},
+      sdate = #{sdate,jdbcType=TIMESTAMP},
+      edate = #{edate,jdbcType=TIMESTAMP},
+      property = #{property,jdbcType=VARCHAR},
+      st = #{st,jdbcType=INTEGER},
+      cuser = #{cuser,jdbcType=INTEGER},
+      uuser = #{uuser,jdbcType=INTEGER},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      utime = #{utime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+    <select id="queryAll"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ticket_category
+        where st=1
+        order by sdate asc
+        limit #{startIndex},#{pageSize}
+    </select>
+    <select id="queryAllCount" resultType="java.lang.Integer">
+        select count(*) from    ticket_category
+        where st=1
+    </select>
+</mapper>

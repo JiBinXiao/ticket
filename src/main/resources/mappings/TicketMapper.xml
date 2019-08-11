@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pri.xjb.ticket.mapper.TicketMapper">
+    <resultMap id="BaseResultMap" type="pri.xjb.ticket.model.ticket.response.Ticket">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="aisle" property="aisle" jdbcType="INTEGER"/>
+        <result column="floor" property="floor" jdbcType="INTEGER"/>
+        <result column="rowNum" property="row" jdbcType="INTEGER"/>
+        <result column="columnNum" property="column" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="reSeller" property="reSeller" jdbcType="INTEGER"/>
+        <result column="secrecy" property="secrecy" jdbcType="INTEGER"/>
+        <result column="st" property="st" jdbcType="INTEGER"/>
+        <association property="ticketCategory" javaType="pri.xjb.ticket.model.ticketCategory.response.TicketCategory">
+            <id column="categoryId" property="id" jdbcType="INTEGER"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="categoryIntro" property="intro" jdbcType="VARCHAR"/>
+            <result column="sdate" property="sdate" jdbcType="DATE"/>
+            <result column="edate" property="edate" jdbcType="DATE"/>
+            <result column="property" property="property" jdbcType="VARCHAR"/>
+        </association>
+        <association property="ticketUser" javaType="pri.xjb.ticket.model.user.response.TicketUserPart">
+            <id column="userId" property="id" jdbcType="INTEGER"/>
+            <result column="username" property="username" jdbcType="VARCHAR"/>
+            <result column="userIntro" property="intro" jdbcType="VARCHAR"/>
+            <result column="wxnum" property="wxnum" jdbcType="VARCHAR"/>
+            <result column="phone" property="phone" jdbcType="DATE"/>
+            <result column="sex" property="sex" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, category_id, price, aisle, floor, rowNum, columnNum,
+    remark,reSeller,secrecy
+  </sql>
+    <sql id="Union_Column_List">
+       ticket.*,
+       ticket_category.name,ticket_category.intro as categoryIntro,
+       ticket_category.id as categoryId,ticket_category.sdate, ticket_category.edate,ticket_category.property,
+      ticket_user.id as userId, ticket_user.username,ticket_user.intro as userIntro,ticket_user.wxnum,ticket_user.phone,
+      ticket_user.sex
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Union_Column_List"/>
+        from ticket
+        join ticket_category
+        on ticket.category_id=ticket_category.id
+        join ticket_user
+        on ticket.cuser=ticket_user.id
+        where ticket.id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ticket
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <update id="cancelByd">
+        update ticket set st = 0
+        where id = #{id} and cuser = #{userId}
+
+    </update>
+
+    <update id="releaseById">
+        update ticket set st = 1
+        where id = #{id} and cuser = #{userId}
+
+    </update>
+    <insert id="addByTicketAddParam" parameterType="pri.xjb.ticket.model.ticket.request.TicketAddParam">
+        insert into ticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="aisle != null">
+                aisle,
+            </if>
+            <if test="floor != null">
+                floor,
+            </if>
+            <if test="row != null">
+                rowNum,
+            </if>
+            <if test="column != null">
+                columnNum,
+            </if>
+
+            <if test="cuser != null">
+                cuser,
+            </if>
+            <if test="uuser != null">
+                uuser,
+            </if>
+            <if test="ctime != null">
+                ctime,
+            </if>
+            <if test="utime != null">
+                utime,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="reSeller != null and reSeller!=0">
+                reseller,
+            </if>
+            <if test="secrecy != null and secrecy!=0">
+                secrecy,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="aisle != null">
+                #{aisle,jdbcType=INTEGER},
+            </if>
+            <if test="floor != null">
+                #{floor,jdbcType=INTEGER},
+            </if>
+            <if test="row != null">
+                #{row,jdbcType=INTEGER},
+            </if>
+            <if test="column != null">
+                #{column,jdbcType=INTEGER},
+            </if>
+
+            <if test="cuser != null">
+                #{cuser,jdbcType=INTEGER},
+            </if>
+            <if test="uuser != null">
+                #{uuser,jdbcType=INTEGER},
+            </if>
+            <if test="ctime != null">
+                #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                #{utime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="reSeller != null and reSeller!=0">
+                #{reSeller,jdbcType=INTEGER},
+            </if>
+            <if test="secrecy != null and secrecy!=0">
+                #{secrecy,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="pri.xjb.ticket.model.ticket.response.Ticket">
+        update ticket
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="aisle != null">
+                aisle = #{aisle,jdbcType=INTEGER},
+            </if>
+            <if test="floor != null">
+                floor = #{floor,jdbcType=INTEGER},
+            </if>
+            <if test="row != null">
+                rowNum = #{row,jdbcType=INTEGER},
+            </if>
+            <if test="column != null">
+                columnNum = #{column,jdbcType=INTEGER},
+            </if>
+            <if test="st != null">
+                st = #{st,jdbcType=INTEGER},
+            </if>
+            <if test="cuser != null">
+                cuser = #{cuser,jdbcType=INTEGER},
+            </if>
+            <if test="uuser != null">
+                uuser = #{uuser,jdbcType=INTEGER},
+            </if>
+            <if test="ctime != null">
+                ctime = #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                utime = #{utime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByTicketUpdateParam" parameterType="pri.xjb.ticket.model.ticket.request.TicketUpdateParam">
+        update ticket
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="aisle != null">
+                aisle = #{aisle,jdbcType=INTEGER},
+            </if>
+            <if test="floor != null">
+                floor = #{floor,jdbcType=INTEGER},
+            </if>
+            <if test="row != null">
+                rowNum = #{row,jdbcType=INTEGER},
+            </if>
+            <if test="column != null">
+                columnNum = #{column,jdbcType=INTEGER},
+            </if>
+            <if test="st != null">
+                st = #{st,jdbcType=INTEGER},
+            </if>
+
+
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="queryAll" parameterType="pri.xjb.ticket.model.ticket.request.TicketQueryParam"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ticket
+        <trim prefix="where" prefixOverrides="and | or">
+            and st = 1
+            <if test="categoryId != null and categoryId !=0">
+                and category_id=#{categoryId,jdbcType=INTEGER}
+            </if>
+            <if test="price != null and price !=0">
+                and price = #{price,jdbcType=DECIMAL}
+            </if>
+            <if test="aisle != null and aisle !=0">
+                and aisle =#{aisle,jdbcType=INTEGER}
+            </if>
+            <if test="floor != null and floor !=0">
+                and floor = #{floor,jdbcType=INTEGER}
+            </if>
+
+        </trim>
+        <if test="sortColumn != null and sortColumn != '' and sortType != null and sortType != ''">
+            order by ${sortColumn} ${sortType}
+        </if>
+        <if test="startIndex != null and pageSize != null">
+            limit #{startIndex,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="queryAllCount" parameterType="pri.xjb.ticket.model.ticket.request.TicketQueryParam"
+            resultType="java.lang.Integer">
+        select
+        count(*)
+        from ticket
+        <trim prefix="where" prefixOverrides="and | or">
+            and st = 1
+            <if test="categoryId != null and categoryId !=0">
+                and category_id=#{categoryId,jdbcType=INTEGER}
+            </if>
+            <if test="price != null and price !=0">
+                and price = #{price,jdbcType=DECIMAL}
+            </if>
+            <if test="aisle != null and aisle !=0">
+                and aisle =#{aisle,jdbcType=INTEGER}
+            </if>
+            <if test="floor != null and floor !=0">
+                and floor = #{floor,jdbcType=INTEGER}
+            </if>
+
+        </trim>
+
+    </select>
+    <select id="queryMyAddCount" resultType="java.lang.Integer">
+        select count(*) from ticket where cuser=#{userId}
+
+    </select>
+    <select id="queryMyAdd" resultMap="BaseResultMap">
+        select
+        <include refid="Union_Column_List"/>
+        from ticket
+        join ticket_category
+        on ticket.category_id=ticket_category.id
+        join ticket_user
+        on ticket.cuser=ticket_user.id
+        where ticket.cuser = #{userId} order by ticket.ctime desc
+        limit #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="getAisleByPrice"
+            parameterType="pri.xjb.ticket.model.ticket.request.TicketGetAisleParam"
+            resultType="java.lang.String"
+    >
+        select aisle from ticket where category_id=#{categoryId}
+        and price = #{price} group by aisle order by aisle asc
+    </select>
+
+    <select id="getRowNumByPriceAndAisle" parameterType="pri.xjb.ticket.model.ticket.request.TicketGetRowNumParam"
+            resultType="java.lang.String">
+        select rowNum from ticket where category_id=#{categoryId}
+        and price = #{price} and aisle=#{aisle} group by rowNum order by rowNum asc
+
+    </select>
+
+
+</mapper>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pri.xjb.ticket.mapper.TicketAttentionMapper">
+    <resultMap id="BaseResultMap" type="pri.xjb.ticket.model.attention.TicketAttention">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="tid" property="tid" jdbcType="INTEGER"/>
+        <result column="st" property="st" jdbcType="INTEGER"/>
+        <result column="ctime" property="ctime" jdbcType="TIMESTAMP"/>
+        <result column="utime" property="utime" jdbcType="TIMESTAMP"/>
+
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="pri.xjb.ticket.model.attention.response.TicketAttentionResp">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="tid" property="tid" jdbcType="INTEGER"/>
+        <result column="st" property="st" jdbcType="INTEGER"/>
+        <result column="ctime" property="ctime" jdbcType="TIMESTAMP"/>
+        <result column="utime" property="utime" jdbcType="TIMESTAMP"/>
+        <association property="ticket" javaType="pri.xjb.ticket.model.ticket.response.Ticket">
+            <id column="tid" property="id" jdbcType="INTEGER"/>
+            <result column="price" property="price" jdbcType="DECIMAL"/>
+            <result column="aisle" property="aisle" jdbcType="INTEGER"/>
+            <result column="floor" property="floor" jdbcType="INTEGER"/>
+            <result column="rowNum" property="row" jdbcType="INTEGER"/>
+            <result column="columnNum" property="column" jdbcType="INTEGER"/>
+            <result column="remark" property="remark" jdbcType="VARCHAR"/>
+            <result column="reSeller" property="reSeller" jdbcType="INTEGER"/>
+            <result column="secrecy" property="secrecy" jdbcType="INTEGER"/>
+        </association>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uid, tid, st, ctime, utime
+  </sql>
+
+    <sql id="Union_Column_List">
+    ticket_attention.*,
+    ticket.category_id, ticket.price,
+    ticket.aisle, ticket.floor, ticket.rowNum,
+    ticket.columnNum,ticket.remark,ticket.reSeller,ticket.secrecy
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from ticket_attention
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="queryAllCount" resultType="java.lang.Integer">
+    select count(*) from ticket_attention where uid=#{userId}
+  </select>
+    <select id="queryAll" resultMap="UnionResultMap">
+        select
+        <include refid="Union_Column_List"/>
+        from ticket_attention
+        join ticket
+        on ticket_attention.tid = ticket.id
+        where ticket_attention.uid = #{userId}
+
+        order by ticket_attention.ctime desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+
+    <insert id="insertSelective" parameterType="pri.xjb.ticket.model.attention.TicketAttention">
+        insert into ticket_attention
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="uid != null">
+                uid,
+            </if>
+            <if test="tid != null">
+                tid,
+            </if>
+            <if test="st != null">
+                st,
+            </if>
+            <if test="ctime != null">
+                ctime,
+            </if>
+            <if test="utime != null">
+                utime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="uid != null">
+                #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="tid != null">
+                #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="st != null">
+                #{st,jdbcType=INTEGER},
+            </if>
+            <if test="ctime != null">
+                #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                #{utime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <insert id="add">
+        insert into ticket_attention(uid,tid,ctime) values(#{userId},#{tid},#{ctime})
+
+    </insert>
+    <delete id="deleteByTid">
+        delete from ticket_attention where tid=#{tid} and uid=#{userId}
+    </delete>
+    <select id="selectByUserIdAndTid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ticket_attention
+        where uid=#{userId} and tid = #{tid}
+    </select>
+    <update id="updateByPrimaryKeySelective" parameterType="pri.xjb.ticket.model.attention.TicketAttention">
+        update ticket_attention
+        <set>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="tid != null">
+                tid = #{tid,jdbcType=INTEGER},
+            </if>
+            <if test="st != null">
+                st = #{st,jdbcType=INTEGER},
+            </if>
+            <if test="ctime != null">
+                ctime = #{ctime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="utime != null">
+                utime = #{utime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

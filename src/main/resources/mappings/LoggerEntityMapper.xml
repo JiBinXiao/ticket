@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pri.xjb.ticket.mapper.LoggerEntityMapper">
+  <resultMap id="BaseResultMap" type="pri.xjb.ticket.model.LoggerEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="clientIp" jdbcType="VARCHAR" property="clientip" />
+    <result column="uri" jdbcType="VARCHAR" property="uri" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="classMethod" jdbcType="VARCHAR" property="classmethod" />
+    <result column="paramData" jdbcType="VARCHAR" property="paramdata" />
+    <result column="sessionId" jdbcType="VARCHAR" property="sessionid" />
+    <result column="createBy" jdbcType="VARCHAR" property="createby" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="returnTime" jdbcType="TIMESTAMP" property="returntime" />
+    <result column="timeConsuming" jdbcType="INTEGER" property="timeconsuming" />
+    <result column="httpStatusCode" jdbcType="VARCHAR" property="httpstatuscode" />
+    <result column="exceptionMessage" jdbcType="VARCHAR" property="exceptionmessage" />
+    <result column="user" jdbcType="VARCHAR" property="exceptionmessage" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, clientIp, uri, type, method, classMethod, paramData, sessionId, createBy,createTime, returnTime,
+    timeConsuming, httpStatusCode, exceptionMessage
+  </sql>
+
+
+
+  <insert id="insertSelective" parameterType="pri.xjb.ticket.model.LoggerEntity">
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="clientip != null">
+        clientIp,
+      </if>
+      <if test="uri != null">
+        uri,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="method != null">
+        method,
+      </if>
+      <if test="classmethod != null">
+        classMethod,
+      </if>
+      <if test="paramdata != null">
+        paramData,
+      </if>
+      <if test="sessionid != null">
+        sessionId,
+      </if>
+      <if test="createby != null">
+        createBy,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="returntime != null">
+        returnTime,
+      </if>
+      <if test="timeconsuming != null">
+        timeConsuming,
+      </if>
+      <if test="httpstatuscode != null">
+        httpStatusCode,
+      </if>
+      <if test="exceptionmessage != null">
+        exceptionMessage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clientip != null">
+        #{clientip,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null">
+        #{uri,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null">
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="classmethod != null">
+        #{classmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="paramdata != null">
+        #{paramdata,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionid != null">
+        #{sessionid,jdbcType=VARCHAR},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returntime != null">
+        #{returntime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="timeconsuming != null">
+        #{timeconsuming,jdbcType=INTEGER},
+      </if>
+      <if test="httpstatuscode != null">
+        #{httpstatuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="exceptionmessage != null">
+        #{exceptionmessage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getCountByUsername" resultType="int" parameterType="java.lang.String">
+    SELECT
+        COUNT(1)
+    FROM
+        sys_log
+    WHERE
+        createBy = #{username}
+    AND LEFT (createTime, 10) = #{date};
+  </select>
+
+</mapper>

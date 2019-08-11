@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="pri.xjb.ticket.mapper.TicketUserMapper">
+    <resultMap id="BaseResultMap" type="pri.xjb.ticket.model.user.response.TicketUser">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="phone" property="phone" jdbcType="CHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="wxnum" property="wxnum" jdbcType="VARCHAR"/>
+        <result column="ltime" property="ltime" jdbcType="TIMESTAMP"/>
+        <result column="ctime" property="ctime" jdbcType="TIMESTAMP"/>
+        <result column="utime" property="utime" jdbcType="TIMESTAMP"/>
+        <result column="intro" property="intro" jdbcType="VARCHAR"/>
+        <result column="st" property="st" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="PartResultMap" type="pri.xjb.ticket.model.user.response.TicketUserPart">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="phone" property="phone" jdbcType="CHAR"/>
+
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="wxnum" property="wxnum" jdbcType="VARCHAR"/>
+        <result column="intro" property="intro" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, phone, username, sex,wxnum, ltime, ctime,
+    utime, intro, st
+  </sql>
+    <sql id="Part_Column_List">
+    id, phone, username, sex,  wxnum,  intro
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from ticket_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ticket_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <update id="updateByPrimaryKeySelective" parameterType="pri.xjb.ticket.model.user.request.TicketUserUpdateParam">
+        update ticket_user
+        <set>
+
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+
+            <if test="wxnum != null">
+                wxnum = #{wxnum,jdbcType=VARCHAR},
+            </if>
+
+            <if test="utime != null">
+                utime = #{utime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="intro != null">
+                intro = #{intro,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="checkPWDById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ticket_user
+        where id = #{id,jdbcType=INTEGER} and password =#{pwd,jdbcType=VARCHAR}
+    </select>
+    <update id="updatePwdById">
+    update ticket_user set password= #{encrptPwd,jdbcType=VARCHAR}
+    where id=#{id,jdbcType=INTEGER}
+  </update>
+    <update id="updatelstate">
+     update ticket_user set st= #{st}
+    where id=#{id}
+  </update>
+    <select id="getByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        id, phone, username, sex,wxnum, ltime, ctime,
+    utime, intro, st,password
+        from ticket_user
+        where phone = #{phone}
+
+    </select>
+    <select id="queryDetailById" parameterType="java.lang.Integer" resultMap="PartResultMap">
+        select
+        <include refid="Part_Column_List"/>
+        from ticket_user
+        where id = #{id}
+    </select>
+    <insert id="register">
+    insert into ticket_user(phone,password,ctime) values(#{phone},#{password},#{ctime})
+  </insert>
+    <update id="updateltime">
+        update ticket_user set ltime=#{ltime} where id = #{id}
+    </update>
+</mapper>

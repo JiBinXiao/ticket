@@ -1,0 +1,20 @@
+#api接口加密配置
+api:
+  encrypy:
+    #debug true下  不执行过滤器加密
+    debug: true
+    #aes加密 密钥
+    key: d7b85f6e214abcda
+    responseCharset: UTF-8
+    #不进行参数校验的接口
+    noParameterCheckList:
+
+    #参数解密  默认不配置则所有接口解密
+    requestDecyptUriList:
+
+    #response加密 默认不配置则所有接口解密
+    responseEncryptUriList:
+
+    countList:
+
+
