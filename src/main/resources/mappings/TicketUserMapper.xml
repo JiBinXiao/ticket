@@ -95,7 +95,7 @@
         where id = #{id}
     </select>
     <insert id="register">
-    insert into ticket_user(phone,password,ctime) values(#{phone},#{password},#{ctime})
+    insert into ticket_user(username,phone,password,ctime) values(#{username},#{phone},#{password},#{ctime})
   </insert>
     <update id="updateltime">
         update ticket_user set ltime=#{ltime} where id = #{id}

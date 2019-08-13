@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pri.xjb.ticket.common.model.Page;
 import pri.xjb.ticket.common.utis.DESHelper;
+import pri.xjb.ticket.common.utis.SongNameUtils;
 import pri.xjb.ticket.mapper.TicketUserMapper;
 import pri.xjb.ticket.model.user.request.TicketUserAddParam;
 import pri.xjb.ticket.model.user.response.TicketUser;
@@ -33,7 +34,7 @@ public class TickUserServiceImpl implements TicketUserService {
     @Override
     public void updateltime(Integer id, Date date) {
 
-        ticketUserMapper.updateltime(id,date);
+        ticketUserMapper.updateltime(id, date);
     }
 
     @Override
@@ -93,6 +94,7 @@ public class TickUserServiceImpl implements TicketUserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ticketUserMapper.register(ticketUserAddParam.getPhone(),encrptPwd,new Date());
+
+        return ticketUserMapper.register(SongNameUtils.getRandomSongName(), ticketUserAddParam.getPhone(), encrptPwd, new Date());
     }
 }

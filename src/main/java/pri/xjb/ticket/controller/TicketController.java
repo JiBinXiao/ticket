@@ -90,7 +90,10 @@ public class TicketController {
     @PostMapping("/queryDetailById")
     public RtnResult<Ticket> queryDetailById(@ApiParam(name = "id", value = "门票id") @RequestBody Integer id) {
         int userId = userUtils.getPrincipal().getId();
+
         Ticket ticket = ticketService.queryDetailById(id);
+        if(ticket ==null)
+            return RtnResult.errorInfo("暂无数据",null);
         boolean isAttention = ticketAttentionService.checkIsAttnetion(userId,id);
         ticket.setAttention(isAttention);
         return RtnResult.successInfo(ticket);
@@ -114,7 +117,6 @@ public class TicketController {
     @PostMapping("/releaseById")
     public RtnResult releaseById(@ApiParam(name = "id", value = "门票id") @RequestBody Integer id) {
         int userId = userUtils.getPrincipal().getId();
-//        int userId = 1;
         int size = ticketService.releaseById(userId, id);
 
         if (size == 1)
@@ -128,7 +130,6 @@ public class TicketController {
     public RtnResult getAisleByPrice(@ApiParam(name = "id", value = "门票id") @RequestBody TicketGetAisleParam ticketGetAsileParam) {
 
         List<String> list = ticketService.getAisleByPrice(ticketGetAsileParam);
-
         return RtnResult.successInfo("成功", list);
 
     }

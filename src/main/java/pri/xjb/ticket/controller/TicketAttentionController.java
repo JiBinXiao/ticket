@@ -2,6 +2,7 @@ package pri.xjb.ticket.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,9 +43,15 @@ public class TicketAttentionController {
 
     @ApiOperation(value = "关注门票")
     @PostMapping("/add")
-    public RtnResult add(@RequestBody Integer tid) {
+    public RtnResult add(@ApiParam(value = "门票id，不是关注id") @RequestBody Integer tid) {
         int userId = userUtils.getPrincipal().getId();
 //        int userId = 2;
+        //判断是否已经关注过
+        boolean checkIsAttention = ticketAttentionService.checkIsAttnetion(userId, tid);
+        if (checkIsAttention)
+            return RtnResult.errorInfo("你已关注过，请不要重复关注", null);
+
+        //插入数据库
         int num = ticketAttentionService.add(userId, tid);
         if (num == 1)
             return RtnResult.successInfo("关注成功", null);
@@ -54,9 +61,14 @@ public class TicketAttentionController {
 
     @ApiOperation(value = "取消关注门票")
     @PostMapping("/cancel")
-    public RtnResult cancel(@RequestBody Integer tid) {
+    public RtnResult cancel(@ApiParam(value = "门票id，不是关注id") @RequestBody Integer tid) {
         int userId = userUtils.getPrincipal().getId();
-//        int userId = 2;
+        //判断是否已经关注过
+        boolean checkIsAttention = ticketAttentionService.checkIsAttnetion(userId, tid);
+        if (!checkIsAttention)
+            return RtnResult.errorInfo("你已取消关注了，请不要重复操作！", null);
+
+        //真实删除
         int num = ticketAttentionService.deleteByTid(userId, tid);
         if (num == 1)
             return RtnResult.successInfo("取消关注成功", null);

@@ -18,7 +18,7 @@ public class Principal implements Serializable {
     private Integer id;
 
     private String username;
-    private String nickname;
+    private String phone;
 
 
 
@@ -37,8 +37,8 @@ public class Principal implements Serializable {
 
     public Principal(TicketUser user) {
         this.id = user.getId();
-        this.username=user.getPhone();
-//        this.nickname=user.getRealname();
+        this.phone=user.getPhone();
+        this.username=user.getUsername();
 
     }
 
@@ -69,15 +69,11 @@ public class Principal implements Serializable {
         this.username = username;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
-
-
-
-
 }

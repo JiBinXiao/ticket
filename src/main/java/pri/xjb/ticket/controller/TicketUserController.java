@@ -34,6 +34,8 @@ import pri.xjb.ticket.service.TicketUserService;
 @RequestMapping("/user")
 public class TicketUserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(TicketUserController.class);
+
     @Autowired
     TicketUserService ticketUserService;
 
@@ -43,12 +45,13 @@ public class TicketUserController {
     @ApiOperation(value = "注册")
     @PostMapping("/register")
     public RtnResult register(@RequestBody TicketUserAddParam ticketUserAddParam) {
+
         if (!PhoneUtils.isMobileNO(ticketUserAddParam.getPhone())) {
             return RtnResult.errorInfo("请输入正确的手机号格式！", null);
         }
 
         if (ticketUserService.getByPhone(ticketUserAddParam.getPhone()) != null) {
-            return  RtnResult.errorInfo("手机号已注册过！", null);
+            return RtnResult.errorInfo("手机号已注册过！", null);
         }
 
         int num = ticketUserService.register(ticketUserAddParam);
@@ -62,14 +65,16 @@ public class TicketUserController {
     @ApiOperation(value = "更新用户信息", notes = "根据用户主键id更新用户信息")
     @PostMapping("/update")
     public RtnResult update(@RequestBody TicketUserUpdateParam ticketUserUpdateParam) {
-        //todo 生产注意 释放此处代码
+
         Principal principal = userUtils.getPrincipal();
         ticketUserUpdateParam.setId(principal.getId());
 //        ticketUserUpdateParam.setId(2);
         Boolean st = ticketUserService.updateUser(ticketUserUpdateParam);
-        if (st)
-            return RtnResult.successInfo("修改成功", null);
-        else
+        if (st) {
+            String username=ticketUserUpdateParam.getUsername();
+
+            return RtnResult.successInfo("修改成功", username);
+        } else
             return RtnResult.errorInfo("修改失败", null);
     }
 
@@ -106,7 +111,7 @@ public class TicketUserController {
     @ApiOperation(value = "查询用户详情", notes = "通过用户id查询用户详情")
     @PostMapping("/queryDetail")
     public RtnResult<TicketUserPart> queryDetail() {
-        //todo 生产注意 释放此处代码
+
         Principal principal = userUtils.getPrincipal();
 
 //        ticketUserUpdateParam.setId(;
@@ -117,8 +122,6 @@ public class TicketUserController {
 
     }
 
-
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @ApiOperation(value = "登录")
     @PostMapping("/login")
@@ -149,10 +152,11 @@ public class TicketUserController {
             logger.info(token.getUsername() + "  密码错误");
             return RtnResult.errorInfo("密码错误", null);
         }
+        String username=userUtils.getByPhone(ticketUserLoginParam.getPhone()).getUsername();
 
 
         //logger.info("登录返回的 sessionId:" + subject.getSession().getId());
-        return RtnResult.successInfo("成功", token.getUsername());
+        return RtnResult.successInfo("成功", username);
 
     }
 

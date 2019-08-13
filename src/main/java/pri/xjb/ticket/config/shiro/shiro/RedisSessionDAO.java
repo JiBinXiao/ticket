@@ -144,7 +144,7 @@ public class RedisSessionDAO  extends AbstractSessionDAO {
             OnlineUser onlineUser=new OnlineUser();
             onlineUser.setId(principal.getId());
             onlineUser.setUsername(principal.getUsername());
-            onlineUser.setNickname(principal.getNickname());
+            onlineUser.setPhone(principal.getPhone());
             onlineUser.setHost(session.getHost());
             onlineUser.setLtime(session.getLastAccessTime());
 

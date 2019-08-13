@@ -18,17 +18,30 @@ import java.io.IOException;
  * @description:
  **/
 public class Tess4jUtils {
-    public static void main(String[] args) throws Exception {
-        File imageFile = new File("H:\\xjb\\java\\ticket\\src\\main\\resources\\testImage\\t4.jpg");
+
+    private static  ITesseract instance = new Tesseract();//JNA Interface Mapping
+
+
+
+
+    public static String identifyWords(String filePath) throws TesseractException, IOException {
+        File imageFile = new File(filePath);
         BufferedImage image = ImageIO.read(imageFile);
         //对图片进行处理
 //        image = convertImage(image);
-        ITesseract instance = new Tesseract();//JNA Interface Mapping
         instance.setDatapath("H:\\xjb\\java\\ticket\\src\\main\\resources\\tessdata");
         instance.setLanguage("chi_sim");//使用中文字库
         String result = instance.doOCR(image); //识别
-        System.out.println(result);
+
+        return result;
     }
+
+
+    public static void main(String[] args) throws Exception {
+        String filePath="H:\\xjb\\java\\ticket\\src\\main\\resources\\testImage\\t6.jpg";
+        System.out.println(identifyWords(filePath));
+    }
+
     //对图片进行处理 - 提高识别度
     public static BufferedImage convertImage(BufferedImage image) throws Exception {
         //按指定宽高创建一个图像副本

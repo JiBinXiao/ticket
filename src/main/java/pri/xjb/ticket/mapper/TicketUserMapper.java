@@ -26,7 +26,7 @@ public interface TicketUserMapper {
 
     TicketUserPart queryDetailById(Integer id);
 
-    int register(@Param("phone") String phone, @Param("password") String encrptPwd, @Param("ctime") Date ctime);
+    int register(@Param("username") String username,@Param("phone") String phone, @Param("password") String encrptPwd, @Param("ctime") Date ctime);
 
     void updateltime(@Param("id")Integer id,@Param("ltime") Date ltime);
 }
