@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="pri.xjb.ticket.model.ticket.response.Ticket">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="price" property="price" jdbcType="DECIMAL"/>
-        <result column="aisle" property="aisle" jdbcType="INTEGER"/>
+        <result column="aisle" property="aisle" jdbcType="VARCHAR"/>
         <result column="floor" property="floor" jdbcType="INTEGER"/>
         <result column="rowNum" property="row" jdbcType="INTEGER"/>
         <result column="columnNum" property="column" jdbcType="INTEGER"/>
@@ -75,7 +75,7 @@
             <if test="price != null">
                 price,
             </if>
-            <if test="aisle != null">
+            <if test="aisle != null and aisle != ''">
                 aisle,
             </if>
             <if test="floor != null">
@@ -118,8 +118,8 @@
             <if test="price != null">
                 #{price,jdbcType=DECIMAL},
             </if>
-            <if test="aisle != null">
-                #{aisle,jdbcType=INTEGER},
+            <if test="aisle != null and aisle != ''">
+                #{aisle,jdbcType=VARCHAR},
             </if>
             <if test="floor != null">
                 #{floor,jdbcType=INTEGER},
@@ -163,8 +163,8 @@
             <if test="price != null">
                 price = #{price,jdbcType=DECIMAL},
             </if>
-            <if test="aisle != null">
-                aisle = #{aisle,jdbcType=INTEGER},
+            <if test="aisle != null and aisle != ''">
+                aisle = #{aisle,jdbcType=VARCHAR},
             </if>
             <if test="floor != null">
                 floor = #{floor,jdbcType=INTEGER},
@@ -206,8 +206,8 @@
             <if test="price != null">
                 price = #{price,jdbcType=DECIMAL},
             </if>
-            <if test="aisle != null">
-                aisle = #{aisle,jdbcType=INTEGER},
+            <if test="aisle != null and aisle != ''">
+                aisle = #{aisle,jdbcType=VARCHAR},
             </if>
             <if test="floor != null">
                 floor = #{floor,jdbcType=INTEGER},
@@ -242,8 +242,8 @@
             <if test="price != null and price !=0">
                 and price = #{price,jdbcType=DECIMAL}
             </if>
-            <if test="aisle != null and aisle !=0">
-                and aisle =#{aisle,jdbcType=INTEGER}
+            <if test="aisle != null and aisle != ''">
+                and aisle =#{aisle,jdbcType=VARCHAR}
             </if>
             <if test="floor != null and floor !=0">
                 and floor = #{floor,jdbcType=INTEGER}
@@ -271,8 +271,8 @@
             <if test="price != null and price !=0">
                 and price = #{price,jdbcType=DECIMAL}
             </if>
-            <if test="aisle != null and aisle !=0">
-                and aisle =#{aisle,jdbcType=INTEGER}
+            <if test="aisle != null and aisle != ''">
+                and aisle =#{aisle,jdbcType=VARCHAR}
             </if>
             <if test="floor != null and floor !=0">
                 and floor = #{floor,jdbcType=INTEGER}

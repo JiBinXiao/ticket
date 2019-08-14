@@ -1,9 +1,12 @@
 package pri.xjb.ticket.controller;
 
+import ch.qos.logback.core.util.StringCollectionUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pri.xjb.ticket.common.model.RtnResult;
@@ -28,8 +31,11 @@ public class ContactController {
     UserUtils userUtils;
 
     @ApiOperation(value = "留言并发送邮件")
-    @PostMapping("/leaveMessage")
-    public RtnResult leaveMessage(String message) {
+    @PostMapping(value = "/leaveMessage",consumes = "application/json")
+    public RtnResult leaveMessage(@RequestBody String message) {
+
+        if (StringUtils.isEmpty(message))
+            return RtnResult.errorInfo("留言失败，留言不能为空哦~", null);
         Principal principal = userUtils.getPrincipal();
         boolean st = contactService.sendMsg(principal, message);
         if (st)

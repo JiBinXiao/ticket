@@ -3,6 +3,7 @@ package pri.xjb.ticket.common.utis;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,7 @@ public class TicketImageUtils {
         String area = null;
         while (matcher.find()) {
             area = matcher.group();
+            area = area.substring(0, area.length() - 1);
         }
 
         //排数
@@ -91,19 +93,15 @@ public class TicketImageUtils {
 
 
         Ticket ticket = new Ticket();
-        ticket.setSt(0);
-        ticket.setAttention(false);
-        ticket.setTicketUser(new TicketUserPart());
-        ticket.setTicketCategory(new TicketCategory());
-        ticket.setReSeller(0);
-        ticket.setSecrecy(0);
-        ticket.setId(0);
+
+        ticket.setTicketCategory(new TicketCategory(categoryId));
+
         ticket.setPrice(new BigDecimal("0"));
-        ticket.setAisle(0);
-        ticket.setFloor(0);
-        ticket.setRow(0);
-        ticket.setColumn(0);
-        ticket.setRemark("");
+        ticket.setAisle(area);
+
+//        ticket.setRow(rowNum);
+//        ticket.setColumn(columnNum);
+        System.out.println(ticket);
 
 
         return ticket;

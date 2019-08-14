@@ -112,16 +112,16 @@ public class EncryptionFilter implements Filter {
                 && encryptionConfig.getResponseEncryptUriList().size() == 0) {
             decryptionStatus = true;
             encryptionStatus = true;
+        } else {
+            //是否需要解密
+            decryptionStatus = encryptionConfig.getRequestDecyptUriList().contains(uri);
+            //是否需要加密
+            encryptionStatus = encryptionConfig.getResponseEncryptUriList().contains(uri);
         }
-
-        //是否需要解密
-        decryptionStatus = encryptionConfig.getRequestDecyptUriList().contains(uri);
-        //是否需要加密
-        encryptionStatus = encryptionConfig.getResponseEncryptUriList().contains(uri);
 
 
         // 没有加解密操作
-        if (decryptionStatus == false && encryptionStatus == false) {
+        if (!decryptionStatus && !encryptionStatus) {
             chain.doFilter(req, resp);
             return;
         }

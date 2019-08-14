@@ -21,7 +21,7 @@ public class Ticket {
     @ApiModelProperty(value = "价格", required = true)
     private BigDecimal price;
     @ApiModelProperty(value = "所属通道", required = false)
-    private Integer aisle;
+    private String aisle;
     @ApiModelProperty(value = "所属楼层", required = false)
     private Integer floor;
     @ApiModelProperty(value = "所属行数", required = false)
@@ -31,14 +31,14 @@ public class Ticket {
 
     @ApiModelProperty(value = "备注", required = false)
     private String remark;
-    @ApiModelProperty(value = "是否转售,1是 2否", required = true,example = "2")
+    @ApiModelProperty(value = "是否转售,1是 2否", required = true, example = "2")
     private Integer reSeller;
-    @ApiModelProperty(value = "是否保密个人信息。1是 2否", required = true,example = "1")
+    @ApiModelProperty(value = "是否保密个人信息。1是 2否", required = true, example = "1")
     private Integer secrecy;
-    @ApiModelProperty(value = "是否关注", required = false,example = "true")
-    private boolean isAttention=true;
-    @ApiModelProperty(value = "状态 1发布 2未发布", required = false,example = "1")
-    private int st=1;
+    @ApiModelProperty(value = "是否关注", required = false, example = "true")
+    private boolean isAttention = true;
+    @ApiModelProperty(value = "状态 1发布 2未发布", required = false, example = "1")
+    private int st = 1;
 
     public int getSt() {
         return st;
@@ -105,11 +105,11 @@ public class Ticket {
         this.price = price;
     }
 
-    public Integer getAisle() {
+    public String getAisle() {
         return aisle;
     }
 
-    public void setAisle(Integer aisle) {
+    public void setAisle(String aisle) {
         this.aisle = aisle;
     }
 
@@ -144,5 +144,25 @@ public class Ticket {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", ticketCategory=" + ticketCategory +
+                ", ticketUser=" + ticketUser +
+                ", price=" + price +
+                ", aisle=" + aisle +
+                ", floor=" + floor +
+                ", row=" + row +
+                ", column=" + column +
+                ", remark='" + remark + '\'' +
+                ", reSeller=" + reSeller +
+                ", secrecy=" + secrecy +
+                ", isAttention=" + isAttention +
+                ", st=" + st +
+                '}';
     }
 }

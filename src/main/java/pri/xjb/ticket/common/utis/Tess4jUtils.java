@@ -28,7 +28,11 @@ public class Tess4jUtils {
         File imageFile = new File(filePath);
         BufferedImage image = ImageIO.read(imageFile);
         //对图片进行处理
-//        image = convertImage(image);
+        try {
+            image = convertImage(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         instance.setDatapath("H:\\xjb\\java\\ticket\\src\\main\\resources\\tessdata");
         instance.setLanguage("chi_sim");//使用中文字库
         String result = instance.doOCR(image); //识别

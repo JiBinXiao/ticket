@@ -20,7 +20,7 @@ public class TicketQueryParam {
     @ApiModelProperty(value = "单价", required = false,example = "755")
     private BigDecimal price;
     @ApiModelProperty(value = "所属通道", required = false)
-    private Integer aisle;
+    private String aisle;
     @ApiModelProperty(value = "所属楼层", required = false)
     private Integer floor;
     @ApiModelProperty(value = "所属行号(排数)", required = false)
@@ -87,11 +87,11 @@ public class TicketQueryParam {
         this.price = price;
     }
 
-    public Integer getAisle() {
+    public String getAisle() {
         return aisle;
     }
 
-    public void setAisle(Integer aisle) {
+    public void setAisle(String aisle) {
         this.aisle = aisle;
     }
 

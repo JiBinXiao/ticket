@@ -28,6 +28,13 @@ public class TicketCategory {
     @ApiModelProperty(value = "演出性质")
     private String property;
 
+    public TicketCategory() {
+    }
+
+    public TicketCategory(Integer id) {
+        this.id = id;
+    }
+
     public String getDate() {
         return date;
     }
@@ -92,4 +99,17 @@ public class TicketCategory {
         this.property = property == null ? null : property.trim();
     }
 
+    @Override
+    public String toString() {
+        return "TicketCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", intro='" + intro + '\'' +
+                ", date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", sdate=" + sdate +
+                ", edate=" + edate +
+                ", property='" + property + '\'' +
+                '}';
+    }
 }
