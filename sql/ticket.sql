@@ -47,7 +47,7 @@ CREATE TABLE `ticket`  (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `category_id` int(11) NOT NULL COMMENT '分类id和ticket_category主键关联',
   `price` decimal(10, 2) NOT NULL COMMENT '单价',
-  `aisle` int(255) NULL DEFAULT NULL COMMENT '所属通道',
+  `aisle` varchar(255) NULL DEFAULT NULL COMMENT '所属通道',
   `floor` int(255) NULL DEFAULT NULL COMMENT '所属楼层',
   `rowNum` int(255) NULL DEFAULT NULL COMMENT '所属行数',
   `columnNum` int(255) NULL DEFAULT NULL COMMENT '所属列数',
