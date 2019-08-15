@@ -37,12 +37,12 @@ public class ImageController {
     @ApiOperation(value = "门票图片识别")
     @PostMapping("/recognizeTicket")
     public RtnResult<Ticket> recognizeTicket(@ApiParam(required = true) MultipartFile file) {
-//        int id = userUtils.getPrincipal().getId();
+        int id = userUtils.getPrincipal().getId();
         if (file == null || file.isEmpty()) {
             return RtnResult.errorInfo("文件不能为空", null);
         }
         StringBuilder fileName = new StringBuilder();
-        int id = 0;
+//        int id = 0;
         fileName.append(id).append("-").append(UUID.randomUUID().toString().replaceAll("-", ""));
         String type = file.getContentType();
         if ("image/png".equals(type)) {
