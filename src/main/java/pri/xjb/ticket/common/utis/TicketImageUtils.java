@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.tess4j.TesseractException;
 import org.apache.commons.lang3.StringUtils;
+import pri.xjb.ticket.common.api.BaiduApi;
+
 import pri.xjb.ticket.model.user.response.TicketUserPart;
 import pri.xjb.ticket.model.ticketCategory.response.TicketCategory;
 
@@ -25,18 +27,26 @@ public class TicketImageUtils {
 
     //演出日期
     private static final String dayRex = "[0-9]{1,2}[日]";
-    //所在区域
+    //门票价格
+    private static final String priceRex = "(255|355|555|755|1255|1655|1855)";
+    //内场-所在区域
     private static final String areaRex = "[A-Z]{1}[0-9]{1,2}[区]";
+
+    //看台-所在通道
+    private static final String aisleRex = "[0-9]{3}[通道]";
+
     //所在排数
     private static final String rowNumRex = "[0-9]{1,2}[排]";
     //所在列数
     private static final String columnNumRex = "[0-9]{1,2}[号]";
 
-    public static Ticket recognition(String filePath) {
+    public static Ticket recognizeTicket(String filePath) {
         String words = null;
+        //识别文字
         try {
-            words = Tess4jUtils.identifyWords(filePath);
-        } catch (TesseractException | IOException e) {
+//            words = Tess4jUtils.identifyWords(filePath);
+            words = BaiduApi.recognizeImage(filePath);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -66,29 +76,61 @@ public class TicketImageUtils {
 
         }
 
+        double price = 0;
+        pattern = Pattern.compile(priceRex);
+        matcher = pattern.matcher(words);
+        while (matcher.find()) {
+            try {
+                price = Double.parseDouble(matcher.group());
+            } catch (Exception e) {
+                price = 0;
+            }
+
+
+        }
         //区域
         pattern = Pattern.compile(areaRex);
         matcher = pattern.matcher(words);
         String area = null;
         while (matcher.find()) {
             area = matcher.group();
-            area = area.substring(0, area.length() - 1);
+            area = area.substring(0, area.indexOf("区"));
         }
+
+        pattern = Pattern.compile(aisleRex);
+        matcher = pattern.matcher(words);
+        while (matcher.find()) {
+            area = matcher.group();
+            area = area.substring(0, area.indexOf("通"));
+        }
+
 
         //排数
         pattern = Pattern.compile(rowNumRex);
         matcher = pattern.matcher(words);
-        String rowNum = null;
+        int rowNum = 0;
         while (matcher.find()) {
-            rowNum = matcher.group();
+            try {
+                String rowString = matcher.group();
+                rowNum = Integer.parseInt(rowString.substring(0, rowString.indexOf("排")));
+            } catch (Exception e) {
+                rowNum = 0;
+            }
+
         }
 
         //列数
         pattern = Pattern.compile(columnNumRex);
         matcher = pattern.matcher(words);
-        String columnNum = null;
+        int columnNum = 0;
         while (matcher.find()) {
-            columnNum = matcher.group();
+            try {
+                String columnString = matcher.group();
+                columnNum = Integer.parseInt(columnString.substring(0, columnString.indexOf("号")));
+            } catch (Exception e) {
+                columnNum = 0;
+            }
+
         }
 
 
@@ -96,20 +138,20 @@ public class TicketImageUtils {
 
         ticket.setTicketCategory(new TicketCategory(categoryId));
 
-        ticket.setPrice(new BigDecimal("0"));
+        ticket.setPrice(BigDecimal.valueOf(price));
         ticket.setAisle(area);
-
-//        ticket.setRow(rowNum);
-//        ticket.setColumn(columnNum);
-        System.out.println(ticket);
-
-
+        ticket.setRow(rowNum);
+        ticket.setColumn(columnNum);
+        System.out.println(words);
         return ticket;
 
     }
 
     public static void main(String[] args) {
-        String filePath = "H:\\xjb\\java\\ticket\\src\\main\\resources\\testImage\\a1.jpg";
-        recognition(filePath);
+        long t1 = System.currentTimeMillis();
+        String filePath = "H:\\xjb\\java\\ticket\\src\\main\\resources\\testImage\\t6.jpg";
+        System.out.println(recognizeTicket(filePath));
+        long t2 = System.currentTimeMillis();
+        System.out.println((t2 - t1) / 1000);
     }
 }

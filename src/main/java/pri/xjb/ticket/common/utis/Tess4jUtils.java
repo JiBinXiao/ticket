@@ -6,6 +6,8 @@ import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 import net.sourceforge.tess4j.util.ImageHelper;
 import net.sourceforge.tess4j.util.LoadLibs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -19,9 +21,18 @@ import java.io.IOException;
  **/
 public class Tess4jUtils {
 
-    private static  ITesseract instance = new Tesseract();//JNA Interface Mapping
+    private static final Logger logger = LoggerFactory.getLogger(Tess4jUtils.class);
 
 
+    private static ITesseract instance;//JNA Interface Mapping
+
+
+    public static void init(){
+        instance = new Tesseract();
+        instance.setDatapath("H:\\xjb\\java\\ticket\\src\\main\\resources\\tessdata");
+        instance.setLanguage("chi_sim");//使用中文字库
+
+    }
 
 
     public static String identifyWords(String filePath) throws TesseractException, IOException {
@@ -33,8 +44,7 @@ public class Tess4jUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        instance.setDatapath("H:\\xjb\\java\\ticket\\src\\main\\resources\\tessdata");
-        instance.setLanguage("chi_sim");//使用中文字库
+        init();
         String result = instance.doOCR(image); //识别
 
         return result;
@@ -42,7 +52,7 @@ public class Tess4jUtils {
 
 
     public static void main(String[] args) throws Exception {
-        String filePath="H:\\xjb\\java\\ticket\\src\\main\\resources\\testImage\\t6.jpg";
+        String filePath = "H:\\xjb\\java\\ticket\\src\\main\\resources\\testImage\\t7.jpg";
         System.out.println(identifyWords(filePath));
     }
 

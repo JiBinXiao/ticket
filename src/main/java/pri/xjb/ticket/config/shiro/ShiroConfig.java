@@ -116,6 +116,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/webjars/bycdao-ui/**","anon");
 
         filterChainDefinitionMap.put("/doc.html","anon");
+        filterChainDefinitionMap.put("/image/recognizeTicket","anon");
         filterChainDefinitionMap.put("/v2/api-docs","anon");
         filterChainDefinitionMap.put("/swagger-resources","anon");
         filterChainDefinitionMap.put("/user/register","anon");

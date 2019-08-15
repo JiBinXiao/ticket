@@ -26,7 +26,7 @@ public class LoginController {
      *
      * @return
      */
-    @GetMapping(value = "/noAuth")
+    @RequestMapping(value = "/noAuth")
     public RtnResult noAuth() {
         return RtnResult.noAuthInfo("请先登录");
     }
@@ -38,7 +38,7 @@ public class LoginController {
      *
      * @return
      */
-    @GetMapping(value = "/checkLogin")
+    @RequestMapping(value = "/checkLogin")
     public RtnResult checkLogin() {
 
         //1.获取subject
