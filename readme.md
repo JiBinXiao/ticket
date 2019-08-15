@@ -1,5 +1,14 @@
 开发文档地址:http://localhost:22224/ticketApi/doc.html<br>
 
+技术概述：<br>
+数据库：mysql 5.6+ <br>
+springboot 2.1.7  作为底层<br>
+druid+mybatis+redis+shiro+swagger2<br>
+利用Aspect 做访问日志<br>
+接口加解密 可配置<br>
+图像识别：百度智能云 https://cloud.baidu.com/<br>
+
+
 2019.08.07
 springboot+mybaits+shiro+redis 环境搭建<br>
 集成 druid 数据库连接池<br>
