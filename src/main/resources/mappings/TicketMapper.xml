@@ -232,10 +232,13 @@
     <select id="queryAll" parameterType="pri.xjb.ticket.model.ticket.request.TicketQueryParam"
             resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        ticket.id, category_id, price, aisle, floor, rowNum, columnNum,
+        remark,reSeller,secrecy,ticket_user.username
         from ticket
+        join ticket_user
+        on ticket.cuser= ticket_user.id
         <trim prefix="where" prefixOverrides="and | or">
-            and st = 1
+            and ticket.st = 1
             <if test="categoryId != null and categoryId !=0">
                 and category_id=#{categoryId,jdbcType=INTEGER}
             </if>
