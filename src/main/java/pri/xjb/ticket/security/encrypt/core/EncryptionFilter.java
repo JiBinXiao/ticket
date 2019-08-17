@@ -99,8 +99,13 @@ public class EncryptionFilter implements Filter {
 
         logger.debug("RequestURI: {}", uri);
 
+
         // 调试模式不加解密
-        if (encryptionConfig.isDebug()) {
+        if (encryptionConfig.isDebug()
+                || "/ticketApi/doc.html".equals(uri)
+                || uri.startsWith("/ticketApi/webjars")
+                || uri.startsWith("/ticketApi/v2")
+                || uri.startsWith("/ticketApi/swagger-resources")) {
             chain.doFilter(req, resp);
             return;
         }

@@ -296,7 +296,7 @@
         on ticket.category_id=ticket_category.id
         join ticket_user
         on ticket.cuser=ticket_user.id
-        where ticket.cuser = #{userId} order by ticket.ctime desc
+        where ticket.cuser = #{userId} order by st desc,ticket.ctime desc
         limit #{startIndex}, #{pageSize}
     </select>
 
