@@ -13,6 +13,7 @@ import pri.xjb.ticket.model.user.request.TicketUserUpdateParam;
 import pri.xjb.ticket.service.TicketUserService;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * @author: xjb
@@ -94,7 +95,9 @@ public class TickUserServiceImpl implements TicketUserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return ticketUserMapper.register(SongNameUtils.getRandomSongName(), ticketUserAddParam.getPhone(), encrptPwd, new Date());
+        Random random = new Random();
+        String username = SongNameUtils.getRandomSongName() + random.nextInt(100);
+        ;
+        return ticketUserMapper.register(username, ticketUserAddParam.getPhone(), encrptPwd, new Date());
     }
 }
