@@ -28,6 +28,7 @@ public class TicketServiceImpl implements TicketService {
 
         Integer totalCount = ticketMapper.queryAllCount(ticketRequestParam);
         Page<Ticket> page = new Page<>(ticketRequestParam.getPageNow(), ticketRequestParam.getPageSize(), totalCount);
+        ticketRequestParam.setStartIndex(page.getStartIndex());
         page.setTotalCount(totalCount);
         if (totalCount != 0) {
             List<Ticket> list = ticketMapper.queryAll(ticketRequestParam);
